@@ -1,3 +1,5 @@
+import block as block
+
 
 class Block:
     def __init__(self, name, price):
@@ -12,6 +14,9 @@ class Block:
         pass
 
     def pay_rent(self, player, blocks: list[__init__]):
+        pass
+
+    def path(self, player):
         pass
 
 
@@ -65,8 +70,12 @@ class Facilities(Block):
         self.mortgage_value = mortgage_value
 
     def pay_rent(self, player, blocks: list[Block]):
-        self.owner.balance += player.last_roll * self.owner.facilities_count()
-        player.balance -= player.last_roll * self.owner.facilities_count()
+        if self.owner.facilities_count == 1:
+            self.owner.balance += player.last_roll * 4
+            player.balance -= player.last_roll * 4
+        if self.owner.facilities_count == 2:
+            self.owner.balance += player.last_roll * 10
+            player.balance -= player.last_roll * 10
 
 
 class FreeParking(Block):
@@ -78,7 +87,7 @@ class Go(Block):
     def __init__(self):
         self.name = 'GO'
 
-    def action(self, player):
+    def path(self, player):
         player.balance += 200
 
 
@@ -97,6 +106,29 @@ class GoToJail(Block):
 
     def action(self, player):
         player.location = 10
-class CommunityChest():
-    def __init__(self,deck):
+
+
+class CommunityChest(block):
+    def __init__(self, deck, player):
         pass
+
+
+class Chance(block):
+    def __init__(self, deck):
+        pass
+
+
+class IncomeTax(block):
+    def __init__(self, player):
+        self.player = player
+
+    def pay_tax(self, player):
+        self.player.balance -= 200
+
+
+class LuxuryTax(block):
+    def __init__(self, player):
+        self.player = player
+
+    def pay_tax(self, player):
+        self.player.balance -= 75

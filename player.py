@@ -21,3 +21,5 @@ class Player:
             self.double_counter += 1
         else:
             self.double_counter = 0
+
+
