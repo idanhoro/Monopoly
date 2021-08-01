@@ -1,6 +1,7 @@
 import deck as deck
 
 from block import *
+import player as player
 
 BLOCKS = [Go(),
           Street(city='purple', street_name='Mediterranean AVE.', price=60, rent=2, rent_one_house=10,
@@ -87,20 +88,22 @@ BLOCKS = [Go(),
                  rent_two_house=600, rent_three_house=1400, rent_four_house=1700, rent_hotel=2000,
                  rent_sky_scraper=3000, house_cost=200, mortgage_value=200)]
 
+PLAYERS = []
 
 #
 # class Board:
 #     def __init__(self):
 #         self.blocks =
 
+
 def move_player(blocks: list[Block], player):
     player.roll_dice()
     for i in range(player.last_roll):
-        player.location += 1
+        player.location = (player.location+1) % len(BLOCKS)
         blocks[player.location].path(player)
 
 
 def move_to_location(blocks: list[Block], player, location):
     while player.location != location:
-        player.location += 1
+        player.location = (player.location+1) % len(BLOCKS)
         blocks[player.location].path(player)

@@ -1,11 +1,16 @@
 import board
+from block import TrainStation, Facilities
+from board import PLAYERS, BLOCKS
+import random
 
 
 class Chance():
     def __init__(self):
-        deck = [AdvanceToGo(), MoveToBoardWalk(), AdvanceToIllinois(), AdvanceToCharlesPlaces(), TakeARide(),
+        self.deck = [AdvanceToGo(), MoveToBoardWalk(), AdvanceToIllinois(), AdvanceToCharlesPlaces(), TakeARide(),
                 NearestRailroad(), NearestFacility(), GoBack(), Dividend(), BuildingMatures(), PoorTaxes(), Chairman(),
                 GeneralRepairs(), GoToJail(), GetOutOfJail()]
+
+        random.shuffle(self.deck)
 
 
 class AdvanceToGo:
@@ -56,14 +61,30 @@ class NearestRailroad:
     def __init__(self):
         self.card_text = 'Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. if Railroad is UNOWNED, you may buy it from the bank'
 
-    pass  # TODO: function to find nearest Railroad
+    def action(self, player):
+        while not isinstance(BLOCKS[player.location], TrainStation):
+            player.location = (player.location + 1) % len(BLOCKS)
+            BLOCKS[player.location].path(player)
+        if BLOCKS[player.location].owner is None:
+            BLOCKS[player.location].buy(player)
+        if BLOCKS[player.location].owner != player.owner:
+            BLOCKS[player.location].pay_rent(player, BLOCKS)
+            BLOCKS[player.location].pay_rent(player, BLOCKS)
 
 
 class NearestFacility:
     def __init__(self):
         self.card_text = 'Advance token to nearest utility, if unowned you may buy it from the bank. if owned, throw dice and pay owner a total ten times the amount thrown'
 
-    pass  # TODO: function to find nearest facility
+    def action(self, player):
+        while not isinstance(BLOCKS[player.location], Facilities):
+            player.location = (player.location + 1) % len(BLOCKS)
+            BLOCKS[player.location].path(player)
+        if BLOCKS[player.location].owner is None:
+            BLOCKS[player.location].buy(player)
+        if BLOCKS[player.location].owner != player.owner:
+            player.balance -= player.last_roll * 10
+            BLOCKS[player.location].owner.balance += player.last_roll * 10
 
 
 class GoBack:
@@ -104,15 +125,25 @@ class Chairman:
         self.card_text = 'You have been elected chairman of the board pay each player 50$'
 
     def action(self, player):
-        pass  # TODO: function to pay all the players from the current player
+        for p in PLAYERS:
+            p.balance -= 50
+            player.balance += 50
 
 
 class GeneralRepairs:
     def __init__(self):
-        self.card_text = 'Make general repairs on all your property for each house pay 25$ for each hotel 100$'
+        self.card_text = 'Make general repairs on all your property for each house pay 25$ for each hotel 100$, 130$ for each sky-scraper'
 
     def action(self, player):
-        pass  # TODO: function to calculate the repairs costs
+        total_sum = 0
+        for block in BLOCKS:
+            if block.house_count <= 4:
+                total_sum += block.house_count * 25
+            elif block.house_count == 5:
+                total_sum += 100
+            elif block.house_count == 6:
+                total_sum += 130
+        player.balance -= total_sum
 
 
 class GoToJail:

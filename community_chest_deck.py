@@ -1,12 +1,14 @@
-import se as se
+from board import PLAYERS, BLOCKS
+import random
 
 
-class CommunityChest():
+class CommunityChest:
     def __init__(self):
-        deck = [AdvanceToGo(), LifeInsurance(), BeautyContest(), BankError(), SaleOfStock(), TaxRefund(), Services(),
+        self.deck = [AdvanceToGo(), LifeInsurance(), BeautyContest(), BankError(), SaleOfStock(), TaxRefund(), Services(),
                 Inherit(), XmasFund(), GrandOpera(), DoctorFee(), HospitalTax(), SchoolTax(), StreetRepairs(),
                 GoToJail(), GetOutOfJail()
                 ]
+        random.shuffle(self.deck)
 
 
 class AdvanceToGo:
@@ -86,7 +88,9 @@ class GrandOpera:
         self.card_text = 'Grand opera Opening collect 50$ from every player for opening night seats'
 
     def active(self, player):
-        pass  # TODO: function to collect money from every player
+        for p in PLAYERS:
+            p.balance -= 50
+            player.balance += 50
 
 
 class DoctorFee:
@@ -115,11 +119,20 @@ class SchoolTax:
 
 class StreetRepairs:
     def __init__(self):
-        self.card_text = 'You are assessed for street repairs, 40$ per house, 115$ per hotel'
+        self.card_text = 'You are assessed for street repairs, 40$ per house, 115$ per hotel, 150$ per sky-scraper'
+
 
     def active(self, player):
-        pass  # TODO: function to calculate the repairs costs
-
+        total_sum = 0
+        for block in BLOCKS:
+            if block.owner == player.owner:
+                if block.house_count <= 4:
+                    total_sum += block.house_count * 40
+                elif block.house_count == 5:
+                    total_sum += 115
+                elif block.house_count == 6:
+                    total_sum += 150
+        player.balance -= total_sum
 
 class GoToJail:
     def __init__(self):

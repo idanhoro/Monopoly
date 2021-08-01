@@ -1,4 +1,5 @@
 import block as block
+from board import BLOCKS
 
 
 class Block:
@@ -6,18 +7,21 @@ class Block:
         self.name = name
         self.price = price
         self.owner = None
+        self.is_mortgage = False
 
     def buy(self, player):
         self.owner = player
-
-    def sell(self):
-        pass
+        player.balance -= self.price
 
     def pay_rent(self, player, blocks: list[__init__]):
         pass
 
     def path(self, player):
         pass
+
+    def mortgage(self, player):
+        player.balance += BLOCKS[player.location].mortgage_value
+        BLOCKS[player.location].is_mortgage = True
 
 
 class Street(Block):
@@ -47,6 +51,16 @@ class Street(Block):
             if isinstance(block, Street) and block.city == self.city and block.owner != self.owner:
                 return False
         return True
+
+    def buy_house(self, player):
+        if player.house_count < 6:
+            self.house_count += 1
+            player.balance -= self.house_cost
+
+    def sell_house(self, player):
+        if player.house_count > 0:
+            self.house_count -= 1
+            player.balance += self.house_cost
 
 
 class TrainStation(Block):
@@ -97,7 +111,7 @@ class Jail(Block):
 
     def action(self, player):
         if player.is_in_jail:
-            pass  # TODO:out of jail function
+            pass
 
 
 class GoToJail(Block):
