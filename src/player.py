@@ -4,14 +4,14 @@ import numpy as np
 import os
 
 PIECE_SIZE = (75, 75)
-players_images = {'Shoe': pygame.transform.scale(pygame.image.load(os.path.join('images', 'shoe.png')), PIECE_SIZE),
-                  'Dog': pygame.transform.scale(pygame.image.load(os.path.join('images', 'dog.png')), PIECE_SIZE),
-                  'Cat': pygame.transform.scale(pygame.image.load(os.path.join('images', 'cat.png')), PIECE_SIZE),
-                  'Iron': pygame.transform.scale(pygame.image.load(os.path.join('images', 'iron.png')), PIECE_SIZE),
-                  'Ship': pygame.transform.scale(pygame.image.load(os.path.join('images', 'ship.png')), PIECE_SIZE),
-                  'wheelbarrow': pygame.transform.scale(pygame.image.load(os.path.join('images', 'wheelbarrow.png')),
+players_images = {'Shoe': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'shoe.png')), PIECE_SIZE),
+                  'Dog': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'dog.png')), PIECE_SIZE),
+                  'Cat': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'cat.png')), PIECE_SIZE),
+                  'Iron': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'iron.png')), PIECE_SIZE),
+                  'Ship': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'ship.png')), PIECE_SIZE),
+                  'wheelbarrow': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'wheelbarrow.png')),
                                                         PIECE_SIZE),
-                  'thimble': pygame.transform.scale(pygame.image.load(os.path.join('images', 'thimble.png')),
+                  'thimble': pygame.transform.scale(pygame.image.load(os.path.join('../images', 'thimble.png')),
                                                     PIECE_SIZE)
                   }
 

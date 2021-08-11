@@ -1,10 +1,10 @@
 import pygame
-from player import Player
-from board import move_on_board, PLAYERS, BLOCKS
+from src.player import Player
+from src.board import move_on_board, PLAYERS, BLOCKS
 
 WIDTH = 1000
 HEIGHT = 1000
-board_image = pygame.image.load("images/board_image.jpg")
+board_image = pygame.image.load("../images/board_image.jpg")
 board_image = pygame.transform.scale(board_image, (WIDTH, HEIGHT))
 
 

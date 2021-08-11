@@ -1,4 +1,4 @@
-from board import PLAYERS, BLOCKS
+from src.board import PLAYERS, BLOCKS
 import random
 
 
