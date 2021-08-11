@@ -1,5 +1,5 @@
-import board
-from block import TrainStation, Facilities
+
+from board import TrainStation, Facilities
 from board import PLAYERS, BLOCKS
 import random
 
