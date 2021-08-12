@@ -107,7 +107,6 @@ class Go(Block):
     def __init__(self, ID):
         self.ID = ID
         self.name = 'GO'
-        self.positions = [(866, 866), (933, 867), (933, 938), (866, 933)]
 
     def path(self, player):
         player.balance += 200
@@ -246,11 +245,9 @@ BLOCKS = [Go(ID=0),
 PLAYERS = []
 
 
-def move_player(blocks: list[Block], player):
-    player.roll_dice()
-    for i in range(player.last_roll):
+def move_player(player):
         player.location = (player.location + 1) % len(BLOCKS)
-        blocks[player.location].path(player)
+        BLOCKS[player.location].path(player)
 
 
 def move_to_location(blocks: list[Block], player, location):
@@ -260,10 +257,10 @@ def move_to_location(blocks: list[Block], player, location):
 
 
 def move_on_board(player):
-    player.location += 1
+    move_player(player)
     directions = {0: np.array([-100, 0]), 1: np.array([0, -100]), 2: np.array([100, 0]), 3: np.array([0, 100])}
     if isinstance(BLOCKS[player.location], (Go, GoToJail, Jail, FreeParking)):
-        player.position += (directions[(player.location) // 10] * 1.5).astype(int)
+        player.position += (directions[(player.location) // 10] * 1.3).astype(int)
         print(player.position)
     else:
         player.position += directions[(player.location) // 10]

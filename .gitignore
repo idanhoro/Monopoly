@@ -1,4 +1,4 @@
 /.idea
 /venv/
 /tasks.md
-/__pycache__/
+__pycache__/
