@@ -1,6 +1,10 @@
 import deck as deck
 import numpy as np
-from player import Player
+
+WIDTH = 1000
+HEIGHT = 1000
+BIG_BlOCK = 133
+SMALL_BLOCK = 80
 
 
 class Block:
@@ -246,8 +250,10 @@ PLAYERS = []
 
 
 def move_player(player):
-        player.location = (player.location + 1) % len(BLOCKS)
-        BLOCKS[player.location].path(player)
+    player.location = (player.location + 1) % len(BLOCKS)
+    BLOCKS[player.location].path(player)
+    player.position = get_pos(player.location)
+    print(player.location)
 
 
 def move_to_location(blocks: list[Block], player, location):
@@ -256,12 +262,23 @@ def move_to_location(blocks: list[Block], player, location):
         blocks[player.location].path(player)
 
 
-def move_on_board(player):
-    move_player(player)
-    directions = {0: np.array([-100, 0]), 1: np.array([0, -100]), 2: np.array([100, 0]), 3: np.array([0, 100])}
-    if isinstance(BLOCKS[player.location], (Go, GoToJail, Jail, FreeParking)):
-        player.position += (directions[(player.location) // 10] * 1.3).astype(int)
-        print(player.position)
-    else:
-        player.position += directions[(player.location) // 10]
-        print(player.position)
+def get_pos(loc):
+    if loc // 10 == 0:
+        if loc % 10 == 0:
+            return WIDTH - (BIG_BlOCK // 2), HEIGHT - (BIG_BlOCK // 2)
+        return WIDTH - BIG_BlOCK - (SMALL_BLOCK * (loc % 10)) + (SMALL_BLOCK // 2), HEIGHT - (BIG_BlOCK // 2)
+
+    if loc // 10 == 1:
+        if loc % 10 == 0:
+            return (BIG_BlOCK // 2), HEIGHT - (BIG_BlOCK // 2)
+        return (BIG_BlOCK // 2), HEIGHT - BIG_BlOCK - (SMALL_BLOCK * (loc % 10)) + (SMALL_BLOCK // 2)
+
+    if loc // 10 == 2:
+        if loc % 10 == 0:
+            return (BIG_BlOCK // 2), (BIG_BlOCK // 2)
+        return BIG_BlOCK + (SMALL_BLOCK * (loc % 10)) - (SMALL_BLOCK // 2), (BIG_BlOCK // 2)
+
+    if loc // 10 == 3:
+        if loc % 10 == 0:
+            return WIDTH - (BIG_BlOCK // 2), (BIG_BlOCK // 2)
+        return WIDTH - (BIG_BlOCK // 2), BIG_BlOCK + (SMALL_BLOCK * (loc % 10)) - (SMALL_BLOCK // 2)

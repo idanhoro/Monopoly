@@ -1,10 +1,9 @@
 import pygame
 from src.player import Player
-from src.board import move_on_board, PLAYERS, BLOCKS
+from src.board import move_player, PLAYERS, BLOCKS, WIDTH, HEIGHT
 import random
 
-WIDTH = 1000
-HEIGHT = 1000
+
 FPS = 7
 board_image = pygame.image.load("./images/board_image.jpg")
 dice_image = pygame.image.load("./images/dice.png")
@@ -28,7 +27,9 @@ def draw_dice(screen, dice1, dice2):
 
 def draw_pieces(screen):
     for player in PLAYERS:
-        screen.blit(player.image, player.position)
+        rect = player.image.get_rect()
+        rect.center = player.position
+        screen.blit(player.image, rect)
 
 
 
@@ -60,7 +61,7 @@ def game_loop(screen):
         screen.blit(board_image, (0, 0))
         draw_pieces(screen)
         if active_player.location != active_player.target_location:
-            move_on_board(active_player)
+            move_player(active_player)
         if rolling:
             draw_dice(screen, random.randint(1, 6), random.randint(1, 6))
         else:

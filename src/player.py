@@ -3,6 +3,7 @@ import pygame
 import numpy as np
 import os
 import sys
+from board import get_pos
 
 print(sys.path)
 PIECE_SIZE = (65, 65)
@@ -25,7 +26,7 @@ class Player:
         self.nickname = nickname
         self.last_roll = 0
         self.double_counter = 0
-        self.position = np.array([900, 900])
+        self.position = get_pos(0)
         self.image = players_images[image_name]
         self.dice1 = 1
         self.dice2 = 1
