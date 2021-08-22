@@ -12,11 +12,10 @@ players_images = {'Shoe': pygame.transform.scale(pygame.image.load(os.path.join(
                   'Cat': pygame.transform.scale(pygame.image.load(os.path.join('./images', 'cat.png')), PIECE_SIZE),
                   'Iron': pygame.transform.scale(pygame.image.load(os.path.join('./images', 'iron.png')), PIECE_SIZE),
                   'Ship': pygame.transform.scale(pygame.image.load(os.path.join('./images', 'ship.png')), PIECE_SIZE),
-                  'wheelbarrow': pygame.transform.scale(pygame.image.load(os.path.join('./images', 'wheelbarrow.png')),
-                                                        PIECE_SIZE),
                   'thimble': pygame.transform.scale(pygame.image.load(os.path.join('./images', 'thimble.png')),
                                                     PIECE_SIZE)
                   }
+
 
 class Player:
     def __init__(self, nickname, image_name):
@@ -28,9 +27,17 @@ class Player:
         self.double_counter = 0
         self.position = get_pos(0)
         self.image = players_images[image_name]
+        self.image_name = image_name
         self.dice1 = 1
         self.dice2 = 1
         self.target_location = 0
+
+    def set_image(self, image_name):
+        self.image = players_images[image_name]
+        self.image_name = image_name
+
+    def set_nickname(self, nickname):
+        self.nickname = nickname
 
     def facilities_count(self, block_list):
         pass
@@ -41,5 +48,7 @@ class Player:
         self.last_roll = self.dice1 + self.dice2
         if self.dice1 == self.dice2:
             self.double_counter += 1
+            if self.double_counter == 3:
+                self.is_in_jail = True
         else:
             self.double_counter = 0
